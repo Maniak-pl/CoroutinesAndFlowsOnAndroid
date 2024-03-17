@@ -1,5 +1,7 @@
 package pl.maniak.coroutineandflows.usecases.coroutines.usecase2
 
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import pl.maniak.coroutineandflows.base.BaseViewModel
 import pl.maniak.coroutineandflows.mock.MockApi
 
@@ -8,7 +10,18 @@ class Perform2SequentialNetworkRequestsViewModel(
 ) : BaseViewModel<UiState>() {
 
     fun perform2SequentialNetworkRequest() {
-        // TODO: Exercise 1
-        // switch to branch "coroutine_course_full" to see solution
+        uiState.value = UiState.Loading
+
+        viewModelScope.launch {
+            try {
+                val androidVersions = mockApi.getRecentAndroidVersions()
+                val recentVersion = androidVersions.last()
+                val featureVersions = mockApi.getAndroidVersionFeatures(recentVersion.apiLevel)
+
+                uiState.value = UiState.Success(featureVersions)
+            } catch (e: Exception) {
+                uiState.value = UiState.Error("Network request failed")
+            }
+        }
     }
 }
