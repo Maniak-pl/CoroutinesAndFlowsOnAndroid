@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pl.maniak.coroutineandflows">
+
+    <application
+        android:name="App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity android:name="MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="pl.maniak.coroutineandflows.base.UseCaseActivity" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase1.PerformSingleNetworkRequestActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase2.Perform2SequentialNetworkRequestsActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase2.callbacks.SequentialNetworkRequestsCallbacksActivity"
+            android:exported="true" />
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase2.rx.SequentialNetworkRequestsRxActivity"
+            android:exported="true" />
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase3.PerformNetworkRequestsConcurrentlyActivity"
+            android:exported="true" />
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase4.VariableAmountOfNetworkRequestsActivity"
+            android:exported="true" />
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase5.NetworkRequestWithTimeoutActivity"
+            android:exported="true" />
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase6.RetryNetworkRequestActivity"
+            android:exported="true" />
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase7.TimeoutAndRetryActivity"
+            android:exported="true" />
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase7.callbacks.TimeoutAndRetryCallbackActivity"
+            android:exported="true" />
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase7.rx.TimeoutAndRetryRxActivity"
+            android:exported="true" />
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase8.RoomAndCoroutinesActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase9.DebuggingCoroutinesActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase10.CalculationInBackgroundActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase11.CooperativeCancellationActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase12.CalculationInSeveralCoroutinesActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase13.ExceptionHandlingActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase14.ContinueCoroutineWhenUserLeavesScreenActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase15.WorkManagerActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase16.PerformanceAnalysisActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.coroutines.usecase17.PerformCalculationOnMainThreadActivity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.flow.usecase1.FlowUseCase1Activity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.flow.usecase2.FlowUseCase2Activity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.flow.usecase3.FlowUseCase3Activity"
+            android:exported="true" />
+
+        <activity
+            android:name="pl.maniak.coroutineandflows.usecases.flow.usecase4.FlowUseCase4Activity"
+            android:exported="true" />
+
+    </application>
+
+</manifest>
