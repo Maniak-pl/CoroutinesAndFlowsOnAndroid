@@ -1,12 +1,70 @@
 package pl.maniak.coroutineandflows.usecases.coroutines.usecase2.callbacks
 
 import pl.maniak.coroutineandflows.base.BaseViewModel
+import pl.maniak.coroutineandflows.mock.AndroidVersion
+import pl.maniak.coroutineandflows.mock.VersionFeatures
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SequentialNetworkRequestsCallbacksViewModel(
     private val mockApi: CallbackMockApi = mockApi()
 ) : BaseViewModel<UiState>() {
 
-    fun perform2SequentialNetworkRequest() {
+    private var getAndroidVersionsCall: Call<List<AndroidVersion>>? = null
+    private var getAndroidFeaturesCall: Call<VersionFeatures>? = null
 
+    fun perform2SequentialNetworkRequest() {
+        uiState.value = UiState.Loading
+
+        getAndroidVersionsCall = mockApi.getRecentAndroidVersions()
+        getAndroidVersionsCall?.enqueue(object : Callback<List<AndroidVersion>> {
+
+            override fun onResponse(
+                call: Call<List<AndroidVersion>>,
+                response: Response<List<AndroidVersion>>
+            ) {
+                // Android: Callbacks are executed on the application's main (UI) thread
+
+                if (response.isSuccessful) {
+                    val mostRecentVersion = response.body()?.last()
+                    if (mostRecentVersion != null) {
+                        getAndroidFeaturesCall =
+                            mockApi.getAndroidVersionFeatures(mostRecentVersion.apiLevel)
+                        getAndroidFeaturesCall?.enqueue(object : Callback<VersionFeatures> {
+                            override fun onResponse(
+                                call: Call<VersionFeatures>,
+                                response: Response<VersionFeatures>
+                            ) {
+                                if (response.isSuccessful) {
+                                    val featuresOfMostRecentVersion = response.body()
+                                    uiState.value = UiState.Success(featuresOfMostRecentVersion!!)
+                                } else {
+                                    uiState.value = UiState.Error("Network request failed")
+                                }
+                            }
+
+                            override fun onFailure(call: Call<VersionFeatures>, t: Throwable) {
+                                uiState.value =
+                                    UiState.Error("Failed to load Android version features")
+                            }
+                        })
+                    }
+                } else {
+                    uiState.value = UiState.Error("Network request failed")
+                }
+            }
+
+            override fun onFailure(call: Call<List<AndroidVersion>>, t: Throwable) {
+                uiState.value = UiState.Error("Failed to load recent Android versions")
+            }
+        })
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+
+        getAndroidVersionsCall?.cancel()
+        getAndroidFeaturesCall?.cancel()
     }
 }
