@@ -1,6 +1,7 @@
 package pl.maniak.coroutineandflows.usecases.coroutines.usecase6
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import pl.maniak.coroutineandflows.base.BaseViewModel
 import pl.maniak.coroutineandflows.mock.MockApi
@@ -26,13 +27,22 @@ class RetryNetworkRequestViewModel(
         }
     }
 
-    private suspend fun <T> retry(numberOfRetries: Int, block: suspend () -> T): T {
+    private suspend fun <T> retry(
+        numberOfRetries: Int,
+        initialDelayMillis: Long = 100,
+        maxDelayMillis: Long = 1000,
+        factor: Double = 2.0,
+        block: suspend () -> T
+    ): T {
+        var currentDelay = initialDelayMillis
         repeat(numberOfRetries) {
             try {
                 return block()
             } catch (exception: Exception) {
                 Timber.e(exception)
             }
+            delay(currentDelay)
+            currentDelay = (currentDelay * factor).toLong().coerceAtMost(maxDelayMillis)
         }
         return block()
     }
