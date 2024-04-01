@@ -24,8 +24,7 @@ This project uses the following dependencies
 
 ## Screenshots
 
-<img src="screen/screen_1.png" alt="Screenshot 1" width="24%" />
-
+<img src="screen/screen_1.png" alt="Screenshot 1" width="24%" /> <img src="screen/screen_2.png" alt="Screenshot 2" width="24%" /> <img src="screen/screen_3.png" alt="Screenshot 3" width="24%" />
 
 ## License
 
