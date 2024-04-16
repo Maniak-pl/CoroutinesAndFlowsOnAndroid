@@ -2,33 +2,35 @@ package pl.maniak.coroutineandflows.usecases.coroutines.usecase12
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.withContext
 import java.math.BigInteger
 
 class FactorialCalculator(
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) {
 
-    fun calculateFactorial(
+    suspend fun calculateFactorial(
         factorialOf: Int,
         numberOfCoroutines: Int
     ): BigInteger {
 
-        // TODO: create sub range list *on background thread*
-        val subRanges = createSubRangeList(factorialOf, numberOfCoroutines)
+        return withContext(defaultDispatcher) {
+            val subRanges = createSubRangeList(factorialOf, numberOfCoroutines)
 
-
-        // TODO: calculate factorial of each subrange in separate coroutine
-        // use calculateFactorialOfSubRange(subRange) therefore
-
-
-        // TODO: create factorial result by multiplying all sub-results and return this
-        // result
-
-        return BigInteger.ZERO
+            subRanges.map { subRange ->
+                async {
+                    calculateFactorialOfSubRange(subRange)
+                }
+            }.awaitAll()
+                .fold(BigInteger.ONE) { acc, element ->
+                    acc.multiply(element)
+                }
+        }
     }
 
-    // TODO: execute on background thread
-    fun calculateFactorialOfSubRange(
+    private fun calculateFactorialOfSubRange(
         subRange: SubRange
     ): BigInteger {
         var factorial = BigInteger.ONE
@@ -38,7 +40,7 @@ class FactorialCalculator(
         return factorial
     }
 
-    fun createSubRangeList(
+    private fun createSubRangeList(
         factorialOf: Int,
         numberOfSubRanges: Int
     ): List<SubRange> {
