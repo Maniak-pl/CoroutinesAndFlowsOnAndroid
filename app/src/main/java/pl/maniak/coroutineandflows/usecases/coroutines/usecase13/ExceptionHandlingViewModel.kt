@@ -1,6 +1,7 @@
 package pl.maniak.coroutineandflows.usecases.coroutines.usecase13
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import pl.maniak.coroutineandflows.base.BaseViewModel
 import pl.maniak.coroutineandflows.mock.MockApi
@@ -31,7 +32,15 @@ class ExceptionHandlingViewModel(
     }
 
     fun handleWithCoroutineExceptionHandler() {
+        uiState.value = UiState.Loading
 
+        val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+            uiState.value = UiState.Error("Network Request failed!")
+        }
+
+        viewModelScope.launch(exceptionHandler) {
+            api.getAndroidVersionFeatures(27)
+        }
     }
 
     fun showResultsEvenIfChildCoroutineFails() {
