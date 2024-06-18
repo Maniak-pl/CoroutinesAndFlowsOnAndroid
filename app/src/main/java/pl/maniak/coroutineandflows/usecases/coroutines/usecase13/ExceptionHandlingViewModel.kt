@@ -1,6 +1,7 @@
 package pl.maniak.coroutineandflows.usecases.coroutines.usecase13
 
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -64,7 +65,10 @@ class ExceptionHandlingViewModel(
                     ).mapNotNull {
                         try {
                             it.await()
-                        } catch (e: Exception) {
+                        } catch (exception: Exception) {
+                            if (exception is CancellationException) {
+                                throw exception
+                            }
                             Timber.e("Error loading feature data!")
                             null
                         }
